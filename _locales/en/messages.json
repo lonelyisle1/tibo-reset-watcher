@@ -1,0 +1,8 @@
+{
+  "extensionName": {
+    "message": "Tibo Reset Watcher"
+  },
+  "extensionDescription": {
+    "message": "Monitor @thsottiaux's public X posts for Codex and ChatGPT quota resets or rule changes."
+  }
+}

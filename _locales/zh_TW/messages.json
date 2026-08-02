@@ -1,0 +1,8 @@
+{
+  "extensionName": {
+    "message": "Tibo Reset Watcher"
+  },
+  "extensionDescription": {
+    "message": "監測 @thsottiaux 的公開 X 貼文，提醒 Codex 與 ChatGPT 額度重設或規則變更。"
+  }
+}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="settingsTitle">Tibo Reset Watcher Settings</title>
+    <link rel="stylesheet" href="options.css">
+  </head>
+  <body>
+    <main>
+      <header>
+        <span id="settings-eyebrow" class="eyebrow">TIBO RESET WATCHER</span>
+        <h1 data-i18n="settingsHeading">Monitoring settings</h1>
+        <p data-i18n="settingsIntro">Rules run locally.</p>
+      </header>
+
+      <form id="settings-form">
+        <section>
+          <h2 data-i18n="checkFrequency">Check frequency</h2>
+          <label for="interval" data-i18n="intervalLabel">Scheduled check interval</label>
+          <select id="interval" name="interval">
+            <option value="1" data-i18n="interval1">1 minute</option>
+            <option value="2" data-i18n="interval2">2 minutes</option>
+            <option value="5" data-i18n="interval5">5 minutes</option>
+            <option value="10" data-i18n="interval10">10 minutes</option>
+          </select>
+          <p id="interval-help" class="help"></p>
+        </section>
+
+        <section>
+          <h2 data-i18n="quotaRules">Quota rules</h2>
+          <p class="intro" data-i18n="rulesIntro">Built-in rules are stored locally.</p>
+          <label for="supplemental-terms" data-i18n="supplementalTerms">Additional quota terms</label>
+          <textarea id="supplemental-terms" rows="11" spellcheck="false"></textarea>
+          <label class="check-row">
+            <input id="notify-rule-changes" type="checkbox">
+            <span data-i18n="notifyRuleChanges">Notify about quota-rule changes</span>
+          </label>
+        </section>
+
+        <section>
+          <h2 data-i18n="safetyLimits">Fixed safety limits</h2>
+          <div class="facts">
+            <div><strong data-i18n="hours72">72 hours</strong><span data-i18n="hours72Help">Default backfill window</span></div>
+            <div><strong data-i18n="items50">50 events</strong><span data-i18n="items50Help">Latest events only</span></div>
+            <div><strong data-i18n="days14">14 days</strong><span data-i18n="days14Help">Deduplication retention</span></div>
+          </div>
+        </section>
+
+        <section>
+          <h2 data-i18n="notificationsData">Notifications and local data</h2>
+          <div class="button-row">
+            <button id="test-notification" type="button" class="secondary" data-i18n="sendTest">Send test notification</button>
+            <button id="clear-history" type="button" class="danger" data-i18n="clearHistory">Clear event history</button>
+          </div>
+          <p class="help" data-i18n="clearHelp">Clearing history keeps deduplication IDs.</p>
+        </section>
+
+        <section class="edge-setting">
+          <h2 id="background-settings-title"></h2>
+          <p id="background-settings-body"></p>
+        </section>
+
+        <div class="save-row">
+          <span id="save-status" role="status"></span>
+          <button type="submit" class="primary" data-i18n="saveSettings">Save settings</button>
+        </div>
+      </form>
+    </main>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

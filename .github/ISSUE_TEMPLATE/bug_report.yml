@@ -1,0 +1,55 @@
+name: Bug report / 问题报告
+description: Report a monitoring, notification, or interface problem / 报告监测、通知或界面问题
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve Tibo Reset Watcher.
+
+        感谢你帮助改进 Tibo Reset Watcher。请勿上传密码、Cookie、会话令牌或完整浏览器配置文件。
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser / 浏览器
+      options:
+        - Microsoft Edge
+        - Google Chrome
+        - Other Chromium browser
+    validations:
+      required: true
+  - type: input
+    id: browser-version
+    attributes:
+      label: Browser version / 浏览器版本
+      placeholder: "For example: 140.0.0.0"
+    validations:
+      required: true
+  - type: input
+    id: extension-version
+    attributes:
+      label: Extension version / 扩展版本
+      placeholder: "For example: 0.5.0"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened? / 发生了什么？
+      description: Describe what you expected and what actually happened. / 请说明预期结果和实际结果。
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Per-date diagnostics / 按日期检查诊断
+      description: Copy the non-sensitive diagnostics from the popup, or attach a screenshot. / 可复制弹窗中的非敏感诊断，或附上截图。
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Privacy check / 隐私确认
+      options:
+        - label: I have removed passwords, cookies, session tokens, and other private data. / 我已移除密码、Cookie、会话令牌和其他隐私数据。
+          required: true

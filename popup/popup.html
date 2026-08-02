@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tibo Reset Watcher</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main>
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">T</div>
+          <div>
+            <h1>Tibo Reset Watcher</h1>
+            <p id="browser-subtitle">Local monitoring</p>
+          </div>
+        </div>
+        <button id="open-options" class="icon-button" data-i18n-title="openSettings" data-i18n-aria="openSettings">⚙</button>
+      </header>
+
+      <section class="hero-card">
+        <div class="hero-row">
+          <div>
+            <span class="account-label" data-i18n="monitoredAccount">Monitored account</span>
+            <strong class="account">@thsottiaux</strong>
+          </div>
+          <span id="status-pill" class="status-pill" data-i18n="loading">Loading</span>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <strong data-i18n="automaticMonitoring">Automatic monitoring</strong>
+            <p id="status-detail" data-i18n="loadingState">Reading local status…</p>
+          </div>
+          <label class="switch" data-i18n-aria="toggleMonitoring">
+            <input id="monitoring-toggle" type="checkbox">
+            <span></span>
+          </label>
+        </div>
+        <div id="progress" class="progress" hidden>
+          <div class="progress-track"><span></span></div>
+          <p id="progress-text" data-i18n="checkingX">Checking X…</p>
+        </div>
+      </section>
+
+      <section id="login-alert" class="alert danger" hidden>
+        <strong data-i18n="loginExpiredTitle">Your X login may have expired</strong>
+        <p id="login-alert-body"></p>
+      </section>
+
+      <section id="error-alert" class="alert warning" hidden>
+        <strong id="error-title" data-i18n="recentCheckIncomplete">The latest check did not fully complete</strong>
+        <p id="error-text"></p>
+      </section>
+
+      <section class="metrics" data-i18n-aria="checkStatus">
+        <div><span data-i18n="lastSuccess">Last success</span><strong id="last-success">—</strong></div>
+        <div><span data-i18n="lastAttempt">Last attempt</span><strong id="last-attempt">—</strong></div>
+        <div><span data-i18n="sinceSuccess">Since success</span><strong id="success-age">—</strong></div>
+        <div><span data-i18n="consecutiveFailures">Consecutive failures</span><strong id="failure-count">0</strong></div>
+      </section>
+
+      <section class="backfill-card">
+        <div class="section-heading">
+          <div>
+            <span class="kicker" data-i18n="backfill">Backfill</span>
+            <h2 data-i18n="last72Hours">Last 72 hours</h2>
+          </div>
+          <span id="backfill-badge" class="mini-badge neutral" data-i18n="notCompleted">Not completed</span>
+        </div>
+        <dl>
+          <div><dt data-i18n="recentRange">Time range</dt><dd id="backfill-range">—</dd></div>
+          <div><dt data-i18n="currentRead">This scan</dt><dd id="backfill-result">—</dd></div>
+          <div><dt data-i18n="rollingKnown">Known across 72 hours</dt><dd id="rolling-result">—</dd></div>
+          <div><dt data-i18n="xLoginStatus">X login</dt><dd id="x-login-status" data-i18n="detecting">Detecting</dd></div>
+          <div><dt data-i18n="dataSource">Data source</dt><dd data-i18n="segmentedSource">Date-segmented search + profile fallback</dd></div>
+        </dl>
+        <p id="coverage-note" class="coverage-note" data-i18n="coverageDefault">Coverage depends on the results X makes visible.</p>
+        <details id="diagnostics-details" class="diagnostics">
+          <summary data-i18n="diagnosticsSummary">View per-date diagnostics</summary>
+          <div id="diagnostics-list"></div>
+        </details>
+      </section>
+
+      <section class="actions" data-i18n-aria="actions">
+        <button id="check-now" class="primary"><span class="action-icon">↻</span><span data-i18n="checkNow">Check now</span></button>
+        <button id="open-profile"><span class="action-icon">↗</span><span data-i18n="openProfile">Open Tibo profile</span></button>
+        <button id="open-search"><span class="action-icon">⌕</span><span data-i18n="openSearch">Open X search</span></button>
+        <button id="test-notification"><span class="action-icon">♢</span><span data-i18n="testNotification">Test notification</span></button>
+      </section>
+
+      <section class="edge-tip">
+        <div id="browser-mark" class="tip-icon" aria-hidden="true">C</div>
+        <div>
+          <strong id="background-title"></strong>
+          <p id="background-body"></p>
+        </div>
+      </section>
+
+      <section class="events-section">
+        <div class="section-heading">
+          <div>
+            <span class="kicker" data-i18n="latestEvents">Latest events</span>
+            <h2 data-i18n="quotaMessages">Quota-related messages</h2>
+            <p class="section-subtitle" data-i18n="filteredOnly">Only local-rule matches are shown</p>
+          </div>
+          <span id="event-count" class="count">0 / 50</span>
+        </div>
+        <div id="latest-event"></div>
+        <details id="history-details">
+          <summary data-i18n="viewHistory">View history</summary>
+          <div id="history-list" class="history-list"></div>
+        </details>
+      </section>
+
+      <footer>
+        <span data-i18n="privacySummary">Does not read passwords, cookies, DMs, or ChatGPT content</span>
+        <button id="privacy-link" data-i18n="privacy">Privacy</button>
+      </footer>
+    </main>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

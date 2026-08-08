@@ -12,7 +12,7 @@ Tibo Reset Watcher is a local, single-purpose browser extension. It monitors pub
 
 ## Data processed and stored locally
 
-The extension stores only monitoring data in `chrome.storage.local`: settings; check timestamps and status; processed post IDs and deduplication metadata; the most recently seen post ID; errors and backfill summaries; a rolling 72-hour union of observed public post IDs, publication and observation times, and local classification results; and up to 50 quota-related events matched by local rules. The rolling cache does not store ordinary post text. A matched event may contain public post text, ID, publication time, URL, post type, author, discovery time, and local classification.
+The extension stores only monitoring data in `chrome.storage.local`: settings; check timestamps and status; processed post IDs plus publication, processing, classifier-version, relevance, and notification metadata; the most recently seen post ID; errors and backfill summaries; a rolling 72-hour union of observed public post IDs, publication and observation times, and local classification results; and up to 50 quota-related events matched by local rules. This metadata allows reclassification after a rule update without repeating alerts already sent. The rolling cache does not store ordinary post text. A matched event may contain public post text, ID, publication time, URL, post type, author, discovery time, and local classification.
 
 Deduplication IDs are retained for 14 days by default and are capped. Event history is limited to 50 items.
 

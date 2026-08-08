@@ -17,6 +17,7 @@ const requiredFiles = [
   "icons/notification-system.png",
   "lib/check-stats.js",
   "lib/i18n.js",
+  "lib/processing-state.js",
   "lib/rolling-observations.js",
   "_locales/en/messages.json",
   "_locales/zh_CN/messages.json",
@@ -80,6 +81,9 @@ if (!background.includes("matchedPostTypes") || !background.includes("stageLastA
 }
 if (!background.includes("recentObservedPosts") || !background.includes("rollingKnown")) {
   throw new Error("The rolling 72-hour observation union must remain enabled");
+}
+if (!background.includes("CLASSIFIER_VERSION") || !background.includes("shouldClassifyPost")) {
+  throw new Error("Classifier-version reprocessing must remain enabled");
 }
 
 const { tr } = await import(pathToFileURL(resolve(root, "lib/i18n.js")).href);

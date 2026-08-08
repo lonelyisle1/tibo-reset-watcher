@@ -4,7 +4,7 @@
 
 An Edge-first, Chrome-compatible Manifest V3 extension that watches public X posts from [@thsottiaux](https://x.com/thsottiaux) and sends local notifications when a post appears to concern ChatGPT, Codex, or ChatGPT Work quota resets, increases, or rule changes.
 
-> Current version: `0.5.0`. This project is not affiliated with or endorsed by OpenAI, X Corp., Microsoft, or Thibault Sottiaux.
+> Current version: `0.5.1`. This project is not affiliated with or endorsed by OpenAI, X Corp., Microsoft, or Thibault Sottiaux.
 
 ## Quick start for non-developers
 
@@ -15,7 +15,7 @@ No coding, server, X API, or OpenAI API is required.
 Open [GitHub Releases](https://github.com/lonelyisle1/tibo-reset-watcher/releases) and download:
 
 ```text
-tibo-reset-watcher-edge-v0.5.0.zip
+tibo-reset-watcher-edge-v0.5.1.zip
 ```
 
 Right-click the ZIP and extract it. Do not select the ZIP itself when installing the extension.
@@ -52,6 +52,7 @@ If the browser says the manifest is missing, you selected the ZIP, its parent fo
 | Known across 72 hours | The union of post IDs observed across multiple scans within the rolling 72-hour window. |
 | Quota-related | Posts matched locally as resets, limit increases, or rule changes. |
 | Resets | Upcoming, possible, or completed resets among the matched posts. |
+| Filtered | Posts returned by X but classified locally as ordinary content; this does not mean the fetch failed. |
 | Possibly incomplete | X did not provide a complete visible result set for at least one date segment. |
 
 Open **View per-date diagnostics** to see scan counts, cumulative counts, relevant matches, scrolls, and completion status for each UTC date segment.
@@ -61,6 +62,8 @@ Open **View per-date diagnostics** to see scan counts, cumulative counts, releva
 - Monitors only `@thsottiaux` in the first release.
 - Uses broad date-segmented `from:thsottiaux` searches, then classifies posts locally.
 - Recognizes upcoming, possible, and completed resets, plus limit and rule changes.
+- Treats Tibo-style implicit phrases such as `in need of a reset` as lower-confidence possible-reset signals while filtering explicit laptop, password, router, and other non-quota resets.
+- Reclassifies posts after a classifier-version update, so a previously filtered post can trigger a delayed alert without repeating notifications already sent.
 - Handles common negated phrases such as “No reset is planned.”
 - Distinguishes realtime and delayed discovery.
 - Deduplicates notifications by post ID.

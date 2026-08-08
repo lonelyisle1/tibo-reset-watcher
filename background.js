@@ -20,11 +20,12 @@ import {
   SEARCH_QUERY,
   SYSTEM_NOTICE_COOLDOWN_MS
 } from "./lib/config.js";
-import { classifyPost } from "./lib/classifier.js";
+import { CLASSIFIER_VERSION, classifyPost } from "./lib/classifier.js";
 import { mergeMatchedPostTypes, summarizeMatchedPostTypes } from "./lib/check-stats.js";
 import { getUiLocale, tr } from "./lib/i18n.js";
 import { mergeRecentObservations, pruneRecentObservations, summarizeRecentObservations } from "./lib/rolling-observations.js";
 import { buildPostNotification, systemNotification } from "./lib/notification.js";
+import { nextProcessedMeta, shouldClassifyPost, wasRelevantPostHandled } from "./lib/processing-state.js";
 import { needsBackfill, pruneProcessedIds } from "./lib/state-utils.js";
 
 async function getSettings() {
@@ -77,6 +78,7 @@ async function ensureDefaults() {
 
 function observationRuleFingerprint(settings) {
   return JSON.stringify({
+    classifierVersion: CLASSIFIER_VERSION,
     notifyRuleChanges: settings.notifyRuleChanges !== false,
     supplementalTerms: [...(settings.supplementalTerms || [])].map((term) => String(term).trim().toLowerCase()).filter(Boolean).sort()
   });
@@ -242,7 +244,7 @@ async function processPostBatch(posts, checkContext = {}) {
   if (!settings.enabled) return;
 
   const stored = await chrome.storage.local.get(["processedPostIds", "processedPostMeta", "history", "runtimeState"]);
-  const processedIds = [...(stored.processedPostIds || [])];
+  const processedIds = [...(stored.processedPostIds || [])].map(String);
   const processed = new Set(processedIds);
   const processedMeta = { ...(stored.processedPostMeta || {}) };
   const history = [...(stored.history || [])];
@@ -251,12 +253,21 @@ async function processPostBatch(posts, checkContext = {}) {
 
   const chronological = [...posts].sort((a, b) => Date.parse(a.publishedAt || "") - Date.parse(b.publishedAt || ""));
   for (const post of chronological) {
-    if (!post?.id || processed.has(post.id)) continue;
-    processed.add(post.id);
-    processedIds.push(post.id);
-    processedMeta[post.id] = { processedAt: detectedAt, publishedAt: post.publishedAt || null };
+    if (!post?.id) continue;
+    const postId = String(post.id);
+    const alreadySeen = processed.has(postId);
+    const previousMeta = processedMeta[postId] || {};
+    if (!shouldClassifyPost(alreadySeen, previousMeta, CLASSIFIER_VERSION)) continue;
+
+    if (!alreadySeen) {
+      processed.add(postId);
+      processedIds.push(postId);
+    }
 
     const classification = classifyPost(post.text, settings);
+    const existingHistoryIndex = history.findIndex((event) => String(event?.id || "") === postId);
+    const alreadyHandledRelevant = wasRelevantPostHandled(previousMeta, existingHistoryIndex >= 0);
+    processedMeta[postId] = nextProcessedMeta(previousMeta, post, classification, detectedAt, CLASSIFIER_VERSION);
     if (!classification.relevant) continue;
 
     const notification = buildPostNotification(post, classification, detectedAt);
@@ -269,10 +280,19 @@ async function processPostBatch(posts, checkContext = {}) {
       ageLabel: notification.age.label,
       checkReason: checkContext.reason || "unknown"
     };
-    history.unshift(event);
 
-    if (notification.shouldNotify) {
-      await chrome.notifications.create(`post:${post.id}`, notification.options);
+    if (existingHistoryIndex >= 0) {
+      history[existingHistoryIndex] = { ...history[existingHistoryIndex], classification };
+      processedMeta[postId].handledRelevantAt = previousMeta.handledRelevantAt || detectedAt;
+      continue;
+    }
+
+    history.unshift(event);
+    processedMeta[postId].handledRelevantAt = detectedAt;
+
+    if (!alreadyHandledRelevant && notification.shouldNotify) {
+      await chrome.notifications.create(`post:${postId}`, notification.options);
+      processedMeta[postId].notifiedAt = detectedAt;
       newestRelevantNotification = event;
     }
   }

@@ -18,7 +18,7 @@ Tibo Reset Watcher 是一个本地运行、单一用途的浏览器扩展：监�
 - `lastSuccessfulCheckAt`：最近一次成功读取 X 内容的时间；
 - `lastAttemptAt`：最近一次尝试检查的时间；
 - `processedPostIds`：已处理的帖子 ID；
-- 去重元数据：帖子发布时间和本机处理时间，用于清理过旧 ID；
+- 去重与分类元数据：帖子发布时间、本机处理/分类时间、分类规则版本、是否相关及是否已经通知，用于升级后重新分类并避免重复提醒；
 - `lastSeenPostId`：最近看到的帖子 ID；
 - `lastError` 和 `monitoringStatus`：错误和运行状态；
 - 最近补查范围、是否完整、读取数量和结束原因；

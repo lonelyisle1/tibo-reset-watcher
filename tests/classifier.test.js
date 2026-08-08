@@ -28,6 +28,19 @@ test("classifies uncertain and conditional resets separately", () => {
   }
 });
 
+test("classifies Tibo's implicit reset teasers as possible resets", () => {
+  for (const text of [
+    "I feel Theo is in need of a reset 👀",
+    "I'm feeling like a reset 😉",
+    "Someone deserves a reset 🤫"
+  ]) {
+    const result = classify(text);
+    assert.equal(result.relevant, true, text);
+    assert.equal(result.eventType, "possible_reset", text);
+    assert.equal(result.level, "warning", text);
+  }
+});
+
 test("classifies completed resets without telling users to spend old quota", () => {
   for (const text of [
     "We have now reset usage limits for all paid users.",
@@ -64,6 +77,8 @@ test("negation never becomes an upcoming reset", () => {
 
 test("ignores unrelated reset language", () => {
   assert.equal(classify("I had to reset my laptop before the demo.").relevant, false);
+  assert.equal(classify("Please reset the router and database.").relevant, false);
+  assert.equal(classify("I reset my password this morning.").relevant, false);
 });
 
 test("respects the rule-change notification toggle", () => {

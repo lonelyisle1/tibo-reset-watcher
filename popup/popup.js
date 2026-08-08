@@ -160,11 +160,13 @@ function renderDiagnostics(backfill) {
       ? tr("diagnosticProfileCounts", {
           scanAll: result.uniquePostsFound ?? result.postsFound ?? 0,
           scanRelevant: result.relevantPostsFound || 0,
+          scanFiltered: Math.max(0, (result.uniquePostsFound ?? result.postsFound ?? 0) - (result.relevantPostsFound || 0)),
           scrolls: result.scrolls || 0
         }, locale)
       : tr("diagnosticCounts", {
           scanAll: result.uniquePostsFound ?? result.postsFound ?? 0,
           scanRelevant: result.relevantPostsFound || 0,
+          scanFiltered: Math.max(0, (result.uniquePostsFound ?? result.postsFound ?? 0) - (result.relevantPostsFound || 0)),
           knownAll: known.all || 0,
           knownRelevant: known.relevant || 0,
           scrolls: result.scrolls || 0
@@ -212,7 +214,12 @@ async function render() {
     elements["backfill-range"].textContent = `${formatDate(backfill.from)} — ${formatDate(backfill.to)}`;
     const sourceResults = backfill.sourceResults || [];
     if (backfill.dateSegments) {
-      elements["backfill-result"].textContent = tr("resultCounts", { all: backfill.uniquePostsFound || 0, relevant: backfill.relevantPostsFound || 0, reset: backfill.resetPostsFound || 0 }, locale);
+      elements["backfill-result"].textContent = tr("resultCounts", {
+        all: backfill.uniquePostsFound || 0,
+        relevant: backfill.relevantPostsFound || 0,
+        reset: backfill.resetPostsFound || 0,
+        filtered: Math.max(0, (backfill.uniquePostsFound || 0) - (backfill.relevantPostsFound || 0))
+      }, locale);
     } else if (sourceResults.length > 1) {
       const search = sourceResults.find((item) => item.source === "search") || sourceResults[0];
       const profile = sourceResults.find((item) => item.source === "profile") || sourceResults[1];
@@ -224,7 +231,8 @@ async function render() {
     elements["rolling-result"].textContent = tr("resultCounts", {
       all: rolling.all || 0,
       relevant: rolling.relevant || 0,
-      reset: rolling.reset || 0
+      reset: rolling.reset || 0,
+      filtered: Math.max(0, (rolling.all || 0) - (rolling.relevant || 0))
     }, locale);
     elements["backfill-badge"].textContent = tr(backfill.complete ? "segmentedComplete" : "possiblyIncomplete", {}, locale);
     elements["backfill-badge"].className = `mini-badge ${backfill.complete ? "good" : "warn"}`;

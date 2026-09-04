@@ -1,6 +1,6 @@
 param(
   [string]$ProjectRoot = (Split-Path -Parent $PSScriptRoot),
-  [string]$Destination = (Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) "tibo-reset-watcher-edge-v0.5.1.zip")
+  [string]$Destination = (Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) "tibo-reset-watcher-edge-v0.5.2.zip")
 )
 
 $items = @(

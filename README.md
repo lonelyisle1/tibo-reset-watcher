@@ -4,7 +4,7 @@
 
 一个优先支持 Microsoft Edge、同时兼容 Chrome 的 Manifest V3 浏览器扩展。它在本机监测 OpenAI / Codex 负责人 Tibo 的 X 账号 [@thsottiaux](https://x.com/thsottiaux)，当公开帖子涉及 ChatGPT、Codex、ChatGPT Work 使用额度、额度重置、额度增加或规则变化时发送系统通知。
 
-> 当前版本：`0.5.1`。第一版只监测 Tibo，不监测其他员工或官方账号。本项目与 OpenAI、X Corp.、Microsoft 或 Thibault Sottiaux 无隶属或背书关系。
+> 当前版本：`0.5.2`。第一版只监测 Tibo，不监测其他员工或官方账号。本项目与 OpenAI、X Corp.、Microsoft 或 Thibault Sottiaux 无隶属或背书关系。
 
 ## 第一次使用？只看这里
 
@@ -15,7 +15,7 @@
 进入本项目的 [Releases](https://github.com/lonelyisle1/tibo-reset-watcher/releases) 页面，下载文件名类似下面的运行包：
 
 ```text
-tibo-reset-watcher-edge-v0.5.1.zip
+tibo-reset-watcher-edge-v0.5.2.zip
 ```
 
 不要下载或双击 `.crx`，也不要直接把 ZIP 文件交给浏览器。先右键 ZIP → **全部解压缩**，记住解压后的文件夹位置。

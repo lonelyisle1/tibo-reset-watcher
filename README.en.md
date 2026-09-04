@@ -4,7 +4,7 @@
 
 An Edge-first, Chrome-compatible Manifest V3 extension that watches public X posts from [@thsottiaux](https://x.com/thsottiaux) and sends local notifications when a post appears to concern ChatGPT, Codex, or ChatGPT Work quota resets, increases, or rule changes.
 
-> Current version: `0.5.1`. This project is not affiliated with or endorsed by OpenAI, X Corp., Microsoft, or Thibault Sottiaux.
+> Current version: `0.5.2`. This project is not affiliated with or endorsed by OpenAI, X Corp., Microsoft, or Thibault Sottiaux.
 
 ## Quick start for non-developers
 
@@ -15,7 +15,7 @@ No coding, server, X API, or OpenAI API is required.
 Open [GitHub Releases](https://github.com/lonelyisle1/tibo-reset-watcher/releases) and download:
 
 ```text
-tibo-reset-watcher-edge-v0.5.1.zip
+tibo-reset-watcher-edge-v0.5.2.zip
 ```
 
 Right-click the ZIP and extract it. Do not select the ZIP itself when installing the extension.

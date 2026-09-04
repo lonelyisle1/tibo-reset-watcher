@@ -19,6 +19,7 @@ const requiredFiles = [
   "lib/i18n.js",
   "lib/processing-state.js",
   "lib/rolling-observations.js",
+  "lib/scan-dispatch.js",
   "_locales/en/messages.json",
   "_locales/zh_CN/messages.json",
   "_locales/zh_TW/messages.json",
@@ -50,6 +51,7 @@ for (const relativePath of requiredFiles) {
 }
 
 const background = await readFile(resolve(root, "background.js"), "utf8");
+const scanDispatch = await readFile(resolve(root, "lib/scan-dispatch.js"), "utf8");
 const contentFiles = ["content.js", "lib/page-fetcher.js"];
 const contentSources = await Promise.all(contentFiles.map((file) => readFile(resolve(root, file), "utf8")));
 for (const [name, source] of [["background.js", background], ...contentFiles.map((file, index) => [file, contentSources[index]])]) {
@@ -84,6 +86,9 @@ if (!background.includes("recentObservedPosts") || !background.includes("rolling
 }
 if (!background.includes("CLASSIFIER_VERSION") || !background.includes("shouldClassifyPost")) {
   throw new Error("Classifier-version reprocessing must remain enabled");
+}
+if (!background.includes("startPageScan") || !scanDispatch.includes("tabsApi.sendMessage")) {
+  throw new Error("Same-URL monitor checks must explicitly dispatch or reload the content script");
 }
 
 const { tr } = await import(pathToFileURL(resolve(root, "lib/i18n.js")).href);

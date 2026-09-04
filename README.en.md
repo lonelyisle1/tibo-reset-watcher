@@ -62,6 +62,7 @@ Open **View per-date diagnostics** to see scan counts, cumulative counts, releva
 - Monitors only `@thsottiaux` in the first release.
 - Uses broad date-segmented `from:thsottiaux` searches, then classifies posts locally.
 - Recognizes upcoming, possible, and completed resets, plus limit and rule changes.
+- Covers observed wording such as `reset will land at`, `we are resetting usage`, `reset has been propagated`, `brand new usage`, and `usage allocation`.
 - Treats Tibo-style implicit phrases such as `in need of a reset` as lower-confidence possible-reset signals while filtering explicit laptop, password, router, and other non-quota resets.
 - Reclassifies posts after a classifier-version update, so a previously filtered post can trigger a delayed alert without repeating notifications already sent.
 - Handles common negated phrases such as “No reset is planned.”

@@ -17,6 +17,11 @@ test("distinguishes a seen-but-filtered post from an already handled relevant po
   assert.equal(wasRelevantPostHandled({}, true), true);
 });
 
+test("rolling relevance prevents a duplicate alert when old history was trimmed", () => {
+  const rollingPreviouslyRelevant = true;
+  assert.equal(wasRelevantPostHandled({}, rollingPreviouslyRelevant), true);
+});
+
 test("stores classifier state without discarding the first-seen timestamp", () => {
   const meta = nextProcessedMeta(
     { processedAt: "2026-08-08T00:00:00Z" },

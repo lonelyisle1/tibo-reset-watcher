@@ -9,7 +9,9 @@ test("classifies a definite future reset as urgent", () => {
   for (const text of [
     "We will reset Codex usage limits tomorrow.",
     "Resetting ChatGPT Work limits tonight.",
-    "A hard reset for Codex limits is incoming."
+    "A hard reset for Codex limits is incoming.",
+    "Your Codex and ChatGPT Work reset will land at 6pm PST. Time to go /fast.",
+    "We are reseting usage for all paid users of Codex and ChatGPT Work."
   ]) {
     const result = classify(text);
     assert.equal(result.relevant, true, text);
@@ -45,7 +47,9 @@ test("classifies completed resets without telling users to spend old quota", () 
   for (const text of [
     "We have now reset usage limits for all paid users.",
     "The Codex reset is complete.",
-    "We reset everyone's limits."
+    "We reset everyone's limits.",
+    "Reset has been propagated to accounts and we landed some fixes to usage.",
+    "Brand new usage for all ChatGPT Work and Codex users."
   ]) {
     const result = classify(text);
     assert.equal(result.eventType, "completed_reset", text);
@@ -57,10 +61,17 @@ test("classifies quota increases and rule changes", () => {
   for (const text of [
     "Codex now has 2x limits for Plus users.",
     "Additional usage is available in ChatGPT Work.",
-    "You can bank your Codex usage limit reset and redeem it later."
+    "You can bank your Codex usage limit reset and redeem it later.",
+    "Astra will be included in the normal usage allocation."
   ]) {
     assert.equal(classify(text).eventType, "limit_change", text);
   }
+});
+
+test("keeps banked resets informational even when delivery time is included", () => {
+  const result = classify("We will give one banked reset for every day without Astra. First one will land in 3 hours.");
+  assert.equal(result.eventType, "limit_change");
+  assert.equal(result.level, "info");
 });
 
 test("negation never becomes an upcoming reset", () => {

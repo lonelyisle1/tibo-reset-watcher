@@ -162,10 +162,10 @@ X 的页面由 JavaScript 动态渲染，登录状态、访问限制和页面结
 
 | 类型 | 典型表达 | 通知动作 |
 | --- | --- | --- |
-| 即将重置 | `will reset`、`reset tomorrow`、`hard reset` | 最高优先级，建议尽快使用剩余额度。 |
+| 即将重置 | `will reset`、`reset tomorrow`、`reset will land at`、`we are resetting usage`、`hard reset` | 最高优先级，建议尽快使用剩余额度。 |
 | 可能重置 | `may reset`、`might reset`、条件触发重置 | 预警，但明确说明尚未确定。 |
-| 已经重置 | `have reset`、`reset complete`、`limits are restored` | 建议检查新额度，不再提示消耗旧额度。 |
-| 额度或规则变化 | `2x limits`、`additional usage`、`banked reset`、`ChatGPT Work` | 普通信息通知，提示查看影响。 |
+| 已经重置 | `have reset`、`reset complete`、`reset has been propagated`、`brand new usage`、`limits are restored` | 建议检查新额度，不再提示消耗旧额度。 |
+| 额度或规则变化 | `2x limits`、`additional usage`、`usage allocation`、`banked reset`、`ChatGPT Work` | 普通信息通知，提示查看影响。 |
 
 `No reset is planned`、`We are not resetting limits`、`This does not reset your usage` 等否定表达不会分类为即将重置。
 

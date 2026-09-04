@@ -26,6 +26,7 @@ import { getUiLocale, tr } from "./lib/i18n.js";
 import { mergeRecentObservations, pruneRecentObservations, summarizeRecentObservations } from "./lib/rolling-observations.js";
 import { buildPostNotification, systemNotification } from "./lib/notification.js";
 import { nextProcessedMeta, shouldClassifyPost, wasRelevantPostHandled } from "./lib/processing-state.js";
+import { startPageScan } from "./lib/scan-dispatch.js";
 import { needsBackfill, pruneProcessedIds } from "./lib/state-utils.js";
 
 async function getSettings() {
@@ -213,7 +214,7 @@ async function startCheck({ reason, fullBackfill = false, focus = false } = {}) 
 
   try {
     const tab = await ensureMonitorTab({ focus });
-    await chrome.tabs.update(tab.id, { url: check.targetUrl, active: focus, pinned: true });
+    await startPageScan(chrome.tabs, tab, check, focus);
     await armCheckWatchdog();
     return { ok: true, check };
   } catch (error) {
@@ -243,7 +244,7 @@ async function processPostBatch(posts, checkContext = {}) {
   const settings = await getSettings();
   if (!settings.enabled) return;
 
-  const stored = await chrome.storage.local.get(["processedPostIds", "processedPostMeta", "history", "runtimeState"]);
+  const stored = await chrome.storage.local.get(["processedPostIds", "processedPostMeta", "history", "runtimeState", "recentObservedPosts"]);
   const processedIds = [...(stored.processedPostIds || [])].map(String);
   const processed = new Set(processedIds);
   const processedMeta = { ...(stored.processedPostMeta || {}) };
@@ -266,7 +267,8 @@ async function processPostBatch(posts, checkContext = {}) {
 
     const classification = classifyPost(post.text, settings);
     const existingHistoryIndex = history.findIndex((event) => String(event?.id || "") === postId);
-    const alreadyHandledRelevant = wasRelevantPostHandled(previousMeta, existingHistoryIndex >= 0);
+    const rollingPreviouslyRelevant = Boolean(stored.recentObservedPosts?.[postId]?.relevant);
+    const alreadyHandledRelevant = wasRelevantPostHandled(previousMeta, existingHistoryIndex >= 0 || rollingPreviouslyRelevant);
     processedMeta[postId] = nextProcessedMeta(previousMeta, post, classification, detectedAt, CLASSIFIER_VERSION);
     if (!classification.relevant) continue;
 
